@@ -13,12 +13,17 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.SearchView;
+import android.widget.TextView;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
 public class ResultMap extends Activity {
 
     private WebView mWebView;
     private SearchView mSearchView;
+    private TextView mBarTextView;
+    private SlidingUpPanelLayout mLayout;
 
     class MyWebViewClient extends WebViewClient {
         @Override
@@ -33,12 +38,23 @@ public class ResultMap extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_map);
 
+        mBarTextView = (TextView) findViewById(R.id.bar_texview);
+        mBarTextView.setText("I'm a slide bar!\nI'm a slide bar!\nI'm a slide bar!\nI'm a slide bar!\nI'm a slide bar!");
+        mBarTextView.setTextSize(30);
+
         mWebView = (WebView) findViewById(R.id.webview);
         mWebView.setWebViewClient(new MyWebViewClient());
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mWebView.setLayerType(mWebView.LAYER_TYPE_SOFTWARE, null);
         mWebView.loadUrl("file:///android_asset/map.html");
+        mWebView.addJavascriptInterface(new WebAppInterface(this, mBarTextView), "Android");
+
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
+
+
+
 
         ActionBar actionBar = this.getActionBar();
         actionBar.setTitle("Result Map");
